@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} New Report {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<title>Saved Reports</title>
+
+
+<ul id="reports" name="reports"></ul>
+
+
+<div style="text-align: center;">
+<h1>Your Saved Reports</h1>  
+</div>
+{% for report in report_data %}
+<li>
+<div class="module">
+    <a href="/report/saved_report/{{ report.reportId }}">
+    <img id="propertyPhoto" src="{{ report.image }}" onerror="this.onerror=null; this.src='/static/assets/img/theme/house.png'" alt="" width="80" height="80">
+    <p>{{ report.address }}</p>
+    <p>Created on {{ report.creation_date }}</p>
+    </a>
+</div>
+</li>
+{% endfor %}
+<style>
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto:700');
+
+li {
+  float: left;
+}
+
+.module {
+  max-width: 200px;
+  padding: 3rem;
+  background: whitesmoke;
+  width: 100%;
+  
+  --notchSize: 20px;
+  
+  clip-path: 
+    polygon(
+      0% var(--notchSize), 
+      var(--notchSize) 0%, 
+      calc(100% - var(--notchSize)) 0%, 
+      100% var(--notchSize), 
+      100% calc(100% - var(--notchSize)), 
+      calc(100% - var(--notchSize)) 100%, 
+      var(--notchSize) 100%, 
+      0% calc(100% - var(--notchSize))
+    );
+}
+
+h2 {
+  color: white;
+  margin: 0 0 1rem 0;
+}
+p {
+  margin: 0;
+}
+</style>  
+
+{% endblock content %}

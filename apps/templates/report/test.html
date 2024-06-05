@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flask App</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"> -->
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Column 1</th>
+				<th>Column 2</th>
+				<th>Column 3</th>
+				<th>Column 4</th>
+				<th>Column 5</th>
+			</tr>
+		</thead>
+		<tbody>
+				<tr>
+					<td>A</td>
+					<td>Lorem ipsum dolor</td>
+					<td>sit amet</td>
+					<td>consectetur</td>
+					<td>adipiscing</td>
+				</tr>
+		</tbody>
+	</table>
+
+	<div class="chart-container">
+		<canvas id="pie-chart"></canvas>
+		<canvas id="line-chart"></canvas>
+	</div>
+
+	<script>
+		var pieCtx = document.getElementById('pie-chart').getContext('2d');
+		var lineCtx = document.getElementById('line-chart').getContext('2d');
+
+		var pieChart = new Chart(pieCtx, {
+			type: 'pie',
+			data: {
+				labels: ['a','b','c','d'],
+				datasets: [{
+					data: [1,2,3,4,5],
+					backgroundColor: [
+						'rgb(255, 99, 132)',
+						'rgb(54, 162, 235)',
+						'rgb(255, 205, 86)'
+					]
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			}
+		});
+
+		var lineChart = new Chart(lineCtx, {
+			type: 'line',
+			data: {
+				labels: ['q','e','t','y'],
+				datasets: [{
+					label: 'Line Chart',
+					data: [1,2,3,4],
+					backgroundColor: 'rgba(255, 99, 132, 0.2)',
+					borderColor: 'rgb(255, 99, 132)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			}
+		});
+	</script>
+</body>
+</html>

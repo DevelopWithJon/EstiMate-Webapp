@@ -1,0 +1,142 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} New Report {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<title>Saved Report</title>
+<header>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</header>
+{% for report in report_data %}
+
+{% set insurance = report.all_insurance[1:-1].split(',') | map('int') | list %}
+{% set water = report.all_water[1:-1].split(',') | map('int') | list %}
+{% set electricity = report.all_electricity[1:-1].split(',') | map('int') | list %}
+{% set RM = report.all_RM[1:-1].split(',') | map('int') | list %}
+{% set management = report.all_management[1:-1].split(',') | map('int') | list %}
+{% set utilities = report.all_utilities[1:-1].split(',') | map('int') | list %}
+{% set gas = report.all_gas[1:-1].split(',') | map('int') | list %}
+{% set capex = report.all_capex[1:-1].split(',') | map('int') | list %}
+{% set monthly_revenue = report.all_monthly_revenue[1:-1].split(',') | map('int') | list %}
+{% set NOI = report.all_NOI[1:-1].split(',') | map('int') | list %}
+{% set coc = report.all_cash_on_cash[1:-1].split(',') | map('int') | list %}
+{% set HOA = report.all_HOA[1:-1].split(',') | map('int') | list %}
+{% set cashflow = report.all_monthly_levered_cash_on_cash[1:-1].split(',') | map('int') | list %}
+
+
+<div style="text-align: center;">
+  <h2>{{ report.address }}</h2>
+  <h3> monthly cashflow {{ "${:,.2f}".format(cashflow[1]) }}</h3>
+</div>
+
+<section>
+<!-- Card stats -->
+<div class="row">
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-stats">
+      <!-- Card body -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <h5 class="card-title text-uppercase text-muted mb-0">NOI</h5>
+            <span class="h2 font-weight-bold mb-0">{{ "${:,.2f}".format(NOI[0]) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Card stats -->
+<div class="row">
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-stats">
+      <!-- Card body -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <h5 class="card-title text-uppercase text-muted mb-0">Levered Profit</h5>
+            <span class="h2 font-weight-bold mb-0">{{ "${:,.2f}".format(report.levered_profit) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-stats">
+        <!-- Card body -->
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title text-uppercase text-muted mb-0">Cash on Cash Return</h5>
+              <span class="h2 font-weight-bold mb-0">{{ "{:,.2f}%".format(coc[0]) }}</span>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="container">
+      <canvas id="revenueGraph"></canvas>
+  </div>
+</section>
+      
+      
+      <script>
+
+          new Chart(document.getElementById("revenueGraph"), {
+            type: 'line',
+            data: {
+              labels: [1,2,3,4,5,6,7,9,10],
+              datasets: [{ 
+                  data: {{ monthly_revenue | safe}},
+                  label: "Revenue",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }
+              ]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Revenue'
+              }
+            }
+          });
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        var dataList = [ {{ insurance | safe }}[0], {{ water | safe }}[0], {{ electricity | safe }}[0], {{ management | safe }}[0], {{ utilities | safe }}[0], {{ gas | safe }}[0], {{ capex | safe }}[0], {{ HOA | safe }}[0]] 
+        const chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Insurance', 'water', 'electricity', 'management', 'utilities', 'gas', 'capex', 'HOA'],
+            datasets: [{
+              label: 'Expenses',
+              data: dataList,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            animation: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        chart.options.animation = false;
+      </script>
+        {% endfor %}
+
+{% endblock content %}
