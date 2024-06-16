@@ -4,8 +4,8 @@ import lossLogo from "@/public/loss.png";
 
 export default function AnalysisCard({ title, value , profit}) {
   return (
-    <div className="bg-gray-200 p-8 flex gap-8 rounded-lg">
-      <div className="flex flex-col gap-4">
+    <div className="bg-gray-200 p-8 flex gap-8 rounded-lg ">
+      <div className="flex flex-col gap-4 w-[60%]">
         <h1 className="text-[22px] text-black font-semibold">{title}</h1>
         <h2 className="text-[20px] text-black ">{value}</h2>
       </div>
